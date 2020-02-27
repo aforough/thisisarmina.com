@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>template | Armina Foroughi</title>
+
+    <link rel="stylesheet" type="text/css" href="css/base.css" />
+    <link rel="icon" type="image/png" href="color.png">
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.2/jquery.min.js"></script>
+
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-109424126-1"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'UA-109424126-1');
+    </script>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.2/jquery.min.js"></script>
+
+    <script>
+      document.documentElement.className="js";var supportsCssVars=function(){var e,t=document.createElement("style");return t.innerHTML="root: { --tmp-var: bold; }",document.head.appendChild(t),e=!!(window.CSS&&window.CSS.supports&&window.CSS.supports("font-weight","var(--tmp-var)")),t.parentNode.removeChild(t),e};supportsCssVars()||alert("Please view this in a modern browser like Google Chrome that supports CSS Variables.");
+    </script>
+
+
+
+  </head>
+
+  <body>
+    <body class="project_page loading">
+
+      <main>
+     <!-- main navigation -->
+     <div class="main_nav">
+      <a class="nav_project" href="index.html#projects">
+        My Projects
+      </a>
+
+      <a class="nav_about about">
+       Me ✌️
+     </a>
+     
+
+    </div>
+
+
+    <div class="content">
+      <div class="hero_image_container">
+        <img src="img/zillow/zillow_hero.jpg" alt="Zillow Places hero mock up">
+      </div>
+
+      <div class="project_section" id="project_section-1">
+        <div class="project_content">
+          <h1>Project Title</h1>
+
+          <div class="grid overview_text">
+              <div class="col_overview1">
+                <h2>Context</h2>
+                <p></p>
+              </div>
+              <div class="col_overview2">
+                <h2>Role</h2>
+                <p></p>
+              </div>
+            </div>
+
+          <div id="section_indicators">
+            <a id="section_indicator-1" href="#project_section-1">Overview</a><span>  -</span>
+            <a id="section_indicator-2" href="#project_section-2">Problem</a><span>  -</span>
+            <a id="section_indicator-3" href="#project_section-3">Approach</a><span>  -</span>
+            <a id="section_indicator-4" href="#project_section-4">Design</a><span>  -</span>
+            <a id="section_indicator-5" href="#project_section-5">Reflection</a>
+
+          </div>
+
+          <p class="project_text">overview
+          </p>
+        </div>
+      </div>
+
+      <div class="project_section" id="project_section-2">
+        <div class="project_content">
+          <h2></h2>
+          <p>
+          </p>
+        </div>
+      </div>
+
+      <div class="project_section" id="project_section-3">
+        <div class="project_content">
+          <h2></h2>
+          <p>
+          </p>
+        </div>
+      </div>
+
+      <div class="project_section" id="project_section-4">
+        <div class="project_content">
+          <h2></h2>
+          <p>
+          </p>
+        </div>
+      </div>
+
+      <div class="project_section" id="project_section-5">
+        <div class="project_content">
+          <h2></h2>
+          <p>
+          </p>
+        </div>
+      </div>
+
+      <div class="grid footer">
+            <a class="next_project-1" href="#">
+            <h2>next</h2>
+            <img src="img/arrow-left-white.png" width="50" class="arrow">
+          </a>
+
+          <a class="next_project-2" href="dd-17.html">
+            <h2>next</h2>
+            <img src="img/arrow-right-white.png" width="50" class="arrow">
+          </a>
+      </div>
+      
+    </div>
+
+
+
+
+    <div id="about_layover">
+      <iframe src="about-layover.html"></iframe>
+      <div class="close"><img src="img/close.png"></div>
+    </div>
+    </main>
+
+
+    <script src="js/imagesloaded.pkgd.min.js"></script>
+    <script src="js/test2.js"></script>
+    
+    <script type="text/javascript">
+    var indicatorBar = $('#section_indicators').offset();
+
+
+    var section1 = $('#project_section-1').offset();   
+    var section2 = $('#project_section-2').offset();
+    var section3 = $('#project_section-3').offset();
+    var section4 = $('#project_section-4').offset();
+    var section5 = $('#project_section-5').offset();
+
+    $('#section_indicator-1').css("background-color", "#60FFD0");
+
+    $(window).scroll(function(){  
+        if($(window).scrollTop() > indicatorBar.top){
+            $('#section_indicators').css({"position" : "fixed" , "top": "0"});
+            $('.project_text').css('margin-top', '7.3em');
+        } else {
+            $('#section_indicators').css({"position" : "static"});
+            $('.project_text').css('margin-top', '2em');
+        } 
+
+
+        if($(window).scrollTop() > section1.top){
+            $('[id*=section_indicator]').css("background-color", "#fff");
+            $('#section_indicator-1').css("background-color", "#60FFD0");
+        } 
+
+        if($(window).scrollTop() > section2.top){
+            $('[id*=section_indicator]').css("background-color", "#fff");
+            $('#section_indicator-2').css("background-color", "#60FFD0");
+        } 
+
+        if($(window).scrollTop() > section3.top){
+            $('[id*=section_indicator]').css("background-color", "#fff");
+            $('#section_indicator-3').css("background-color", "#60FFD0");
+        }
+
+        if($(window).scrollTop() > section4.top){
+            $('[id*=section_indicator]').css("background-color", "#fff");
+            $('#section_indicator-4').css("background-color", "#60FFD0");
+        }
+
+        if($(window).scrollTop() > section5.top){
+            $('[id*=section_indicator]').css("background-color", "#fff");
+            $('#section_indicator-5').css("background-color", "#60FFD0");
+        }
+        
+    });
+    $(".about").click(function(){
+            $("#about_layover").css("display", "block").show();
+            $("body").css("overflow-y","hidden");
+        });
+        $(".close").click(function(){
+            $("#about_layover").css("display", "none").hide();
+            $("body").css("overflow-y","visible");
+        });
+  </script>
+
+    
+  </body>
+
+
+</html>
