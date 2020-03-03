@@ -557,13 +557,13 @@ Landing page
 }
 
 .content_contact {
-	font-size: calc(var(--fontsize-scroll-text) / 2);
+	font-size: 3rem;
 	font-family: var(--font-scroll-text);
 }
 
 .content_contact a{
-	margin-right: 0.15em;
-	margin-top: 0.2em;
+	margin-right: 0.5em;
+	margin-top: 0.4em;
 }
 
 
@@ -613,16 +613,16 @@ body.about_page:hover{
 
 
 .content_about h2{
-	max-width: 85vw;
+	max-width: 80vw;
 	color: #fff;
 	/*font-weight: 400;*/
 	/*line-height: 1.2em;*/
 
 	position: absolute;
-	top:70%;
-	transform: translateY(-50%);
+	top: 1em;
+	/*transform: translateY(-50%);*/
 
-	font-size: calc(var(--fontsize-scroll-text) / 3);
+	font-size: 3rem;
 	font-family: var(--font-scroll-text);
 }
 
@@ -1242,7 +1242,7 @@ break points
 		opacity: 1;
 	}
 	.content_link h2{
-		font-size: 1.3em;
+		font-size: 1.5rem;
 		max-width: 100%;
 
 	}
@@ -1250,7 +1250,7 @@ break points
 		font-weight: 400;
 	}
 	.content_link p{
-		font-size: 1em;
+		font-size: 1.2rem;
 	}
 
 	.info {
@@ -1266,6 +1266,9 @@ break points
 		margin-top: calc(5vh + 1.5em);*/
 	}
 
+	.content_contact {
+		font-size: 1.5rem;
+	}
 	.contact_shortcut{
 		top: 5vh;
 		left: 6%;
@@ -1295,14 +1298,15 @@ break points
 		padding: 3em 3em;
 	}
 	.content_about h2{
-		font-size: 1em;
+		
+		font-size: 2.5rem;
 	}
 
 	.close{
 		/*top: 8vw;
 		right: 8vw;*/
-		width: 5vw;
-		height: 5vw;
+		width: 36px;
+		height: 36px;
 
 	}
 
