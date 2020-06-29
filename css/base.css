@@ -624,6 +624,8 @@ body.about_page:hover{
 
 	font-size: 4rem;
 	font-family: var(--font-scroll-text);
+	font-weight: lighter;
+	line-height: 1.3em;
 }
 
 .content_about a{
@@ -1300,6 +1302,7 @@ break points
 	.content_about h2{
 		
 		font-size: 2.5rem;
+		font-weight: lighter;
 	}
 
 	.close{
