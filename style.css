@@ -30,8 +30,8 @@ body {
      position: fixed;
      top: 0;
      left: 0;
-     width: 900px;
-     height: 900px;
+     width: 800px;
+     height: 800px;
      pointer-events: none;
      z-index: 0;
      transform: translate(-450px, -450px);
@@ -57,10 +57,14 @@ body {
      display: flex;
      justify-content: space-between;
      align-items: center;
+     width: 100%;
+     max-width: 1400px;
+     margin: 0 auto;
      padding: 40px 64px;
      font-size: 16px;
      font-weight: 500;
-     transform: translateY(-12px)
+     transform: translateY(-12px);
+     box-sizing: border-box;
  }
 
  header.in {
@@ -97,8 +101,10 @@ body {
  #nameEl .ch {
      display: inline-block;
      font-variation-settings: 'wght' 700;
-     transform: scaleX(1);
-     transition: font-variation-settings 0.35s cubic-bezier(0.22, 1, 0.36, 1), transform 0.35s cubic-bezier(0.22, 1, 0.36, 1)
+     transform: scaleX(1) translateZ(0);
+     transform-origin: center;
+     will-change: transform, font-variation-settings;
+     backface-visibility: hidden;
  }
 
  #nameEl .sp {
@@ -265,10 +271,6 @@ body {
      font-family: 'Syne', sans-serif;
      font-size: 34px;
      font-weight: 600
- }
-
- .footer-links a {
-     /* border-bottom: 2px solid #39499e */
  }
 
  /* .footer-links span {

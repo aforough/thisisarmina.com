@@ -41,7 +41,7 @@
   <div id="glow"></div>
 
   <header class="reveal">
-    <div>AI Product Design Lead</div>
+    <div>👋</div>
     <nav>
       <a href="#experience">Experience</a>
       <a href="#about">About</a>
@@ -72,9 +72,7 @@
         <img class="row-icon" src="Assets/Chrome.png" alt="Chrome">
         <div>
           <div class="row-title">Chrome</div>
-          <div class="row-desc">Joined as the only designer on Chrome Android, grew into leading a team of 6. Raised the bar for design craft on a
-            product with billions of users, where even the smallest pixel
-            carries outsized weight.</div>
+          <div class="row-desc">Joined as the most junior designer and became the design manager for Chrome on Android within 2 years, leading a team of 6. Led platform-level design while spinning up new investment areas for the org (one of which became Disco). Shipped features to billions of users, landed multiple patents, moved stubborn metrics, and got featured in 2 Google I/O announcements.</div>
         </div>
       </div>
       <div class="row-tag">Designer → Lead + Manager</div>
@@ -125,7 +123,7 @@
   </div>
 
   <div id="about" class="reveal">
-    <div class="about-small">Thanks for scrolling through 👋</div>
+    <div class="about-small">Thanks for scrolling through ✌️</div>
     <div class="about-big">I'm a Staff Design Lead at Google, with a track record spanning billion-user products and "0→1" bets. I currently lead an AI Product Incubation team, building with Gemini's cutting-edge capabilities.</div>
     <div class="about-big">Across every project, my role expands past design. I drive strategy like a PM, prototype like an engineer, and grow fast doing it.</div>
   </div>
@@ -147,7 +145,7 @@
     function centerGlow() {
       const x = window.innerWidth / 2;
       const y = window.innerHeight / 2;
-      glow.style.transform = `translate(${x - 450}px, ${y - 450}px)`;
+      glow.style.transform = `translate(${x - 400}px, ${y - 400}px)`;
       glow.style.opacity = '1';
     }
 
@@ -156,16 +154,13 @@
       window.addEventListener('resize', centerGlow);
     } else {
       document.addEventListener('mousemove', (e) => {
-        glow.style.transform = `translate(${e.clientX - 450}px, ${e.clientY - 450}px)`;
+        glow.style.transform = `translate(${e.clientX - 400}px, ${e.clientY - 400}px)`;
         glow.style.opacity = '1';
       });
 
       document.addEventListener('mouseleave', () => {
         glow.style.opacity = '0';
-        letterSpans.forEach((span) => {
-          span.style.fontVariationSettings = "'wght' 700";
-          span.style.transform = 'scaleX(1)';
-        });
+        resetWave();
       });
     }
 
@@ -190,32 +185,73 @@
     });
 
     let rafPending = false;
-    let lastX = 0, lastY = 0;
+    let isHovered = false;
+    const pointer = { x: window.innerWidth / 2, y: window.innerHeight / 2 };
+    const letterState = new Map();
+
+    function resetWave() {
+      isHovered = false;
+      if (!rafPending) {
+        rafPending = true;
+        requestAnimationFrame(updateWave);
+      }
+    }
 
     function updateWave() {
       rafPending = false;
+      const nameRect = nameEl.getBoundingClientRect();
+      const radius = Math.max(260, Math.min(720, nameRect.width * 0.34));
+      let shouldContinue = false;
+
       letterSpans.forEach((span) => {
+        const state = letterState.get(span) || { weight: 700, scale: 1 };
+        letterState.set(span, state);
+
         const r = span.getBoundingClientRect();
         const cx = r.left + r.width / 2;
         const cy = r.top + r.height / 2;
-        const dist = Math.hypot(lastX - cx, lastY - cy);
-        const radius = 260;
+        const dist = Math.hypot(pointer.x - cx, pointer.y - cy);
         const t = Math.max(0, 1 - dist / radius);
-        const wght = 700 + t * 300;
-        const scaleX = 1 + t * 0.2;
-        span.style.fontVariationSettings = `'wght' ${wght}`;
-        span.style.transform = `scaleX(${scaleX})`;
+        const targetWeight = isHovered ? 700 + t * 300 : 700;
+        const targetScale = isHovered ? 1 + t * 0.16 : 1;
+
+        const ease = isHovered ? 0.16 : 0.12;
+        state.weight += (targetWeight - state.weight) * ease;
+        state.scale += (targetScale - state.scale) * ease;
+
+        span.style.fontVariationSettings = `'wght' ${state.weight.toFixed(2)}`;
+        span.style.transform = `scaleX(${state.scale.toFixed(3)}) translateZ(0)`;
+
+        const diff = Math.abs(state.weight - targetWeight) + Math.abs(state.scale - targetScale);
+        if (diff > 0.01) {
+          shouldContinue = true;
+        }
       });
+
+      if (shouldContinue) {
+        rafPending = true;
+        requestAnimationFrame(updateWave);
+      }
     }
 
     document.addEventListener('mousemove', (e) => {
-      lastX = e.clientX;
-      lastY = e.clientY;
+      pointer.x = e.clientX;
+      pointer.y = e.clientY;
+      isHovered = true;
       if (!rafPending) {
         rafPending = true;
         requestAnimationFrame(updateWave);
       }
     });
+
+    document.addEventListener('mouseleave', () => {
+      if (!rafPending) {
+        rafPending = true;
+        requestAnimationFrame(updateWave);
+      }
+    });
+    window.addEventListener('blur', resetWave);
+    window.addEventListener('resize', resetWave);
 
     // Disco hover overlay (follows cursor, click-through)
     (function(){
