@@ -7,6 +7,10 @@ body {
      scroll-behavior: smooth;
  }
 
+ ::selection {
+  background-color: #D7FE64; /* The highlight background color */
+}
+
  body {
      margin: 0;
      background: #fffef9;
