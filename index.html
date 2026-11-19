@@ -13,7 +13,7 @@
   </script>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Armina Foroughi Portfolio — AI Product Design Lead</title>
+  <title>Armina Foroughi Portfolio — Product Design Lead</title>
   <link rel="icon" type="image/png" href="Assets/favicon.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -23,16 +23,16 @@
   <link rel="stylesheet" href="style.css">
 
 
-  <meta property="og:title" content="Armina Foroughi — AI Product Design Lead" >
-  <meta property="og:description" content="Portfolio of Armina Foroughi, an AI Product Design Lead at Google" >
+  <meta property="og:title" content="Armina Foroughi — Product Design Lead" >
+  <meta property="og:description" content="Portfolio of Armina Foroughi, a Product Design Lead" >
   <meta property="og:image" content="https://www.thisisarmina.com/Assets/preview.png">
   <meta property="og:url" content="https://www.thisisarmina.com" >
   <meta property="og:type" content="website" >
 
 
   <meta name="twitter:card" content="summary_large_image" >
-  <meta name="twitter:title" content="Armina Foroughi — AI Product Design Lead" >
-  <meta name="twitter:description" content="Portfolio of Armina Foroughi, an AI Product Design Lead at Google" >
+  <meta name="twitter:title" content="Armina Foroughi — Product Design Lead" >
+  <meta name="twitter:description" content="Portfolio of Armina Foroughi, a Product Design Lead" >
   <meta name="twitter:image" content="https://www.thisisarmina.com/Assets/preview.png">
 </head>
 
@@ -72,7 +72,7 @@
         <img class="row-icon" src="Assets/Chrome.png" alt="Chrome">
         <div>
           <div class="row-title">Chrome</div>
-          <div class="row-desc">Joined as the most junior designer and became the design manager for Chrome on Android within 2 years, leading a team of 6. Led platform-level design while spinning up new investment areas for the org (one of which became Disco). Shipped features to billions of users, landed multiple patents, moved stubborn metrics, and got featured in 2 Google I/O announcements.</div>
+          <div class="row-desc">Joined as the most junior designer and became the design manager for Chrome on Android within 2 years, leading a team of 4–7 designers. Led platform-level design while spinning up new investment areas for the org (one of which became Disco). Shipped features to billions of users, landed multiple patents, moved stubborn metrics, and got featured in 2 Google I/O announcements.</div>
         </div>
       </div>
       <div class="row-tag">Designer → Lead + Manager</div>
@@ -124,8 +124,8 @@
 
   <div id="about" class="reveal">
     <div class="about-small">Thanks for scrolling through ✌️</div>
-    <div class="about-big">I'm a Staff Design Lead at Google, with a track record spanning billion-user products and "0→1" bets. I currently lead an AI Product Incubation team, building with Gemini's cutting-edge capabilities.</div>
-    <div class="about-big">Across every project, my role expands past design. I drive strategy like a PM, prototype like an engineer, and grow fast doing it.</div>
+    <div class="about-big">I've had the privilege to lead design at both ends of a shift in software: from one interface for billions of people (Chrome), to interfaces generated for one (Google Disco, GenTabs). At both ends, I turn ambiguity into a strategy teams will fund, then into something people actually want to use.</div>
+    <div class="about-big">On every project, my role expands past design: I drive strategy like a PM, prototype like an engineer, and fight for the vision until it ships.</div>
   </div>
 
   <footer>
@@ -137,180 +137,414 @@
   </footer>
 
   <script>
-    // Global cursor glow
-    const glow = document.getElementById('glow');
-    const nameEl = document.getElementById('nameEl');
-    const isTouchDevice = ('maxTouchPoints' in navigator && navigator.maxTouchPoints > 0) || window.matchMedia('(hover: none), (pointer: coarse)').matches;
+    (function () {
+      'use strict';
 
-    function centerGlow() {
-      const x = window.innerWidth / 2;
-      const y = window.innerHeight / 2;
-      glow.style.transform = `translate(${x - 400}px, ${y - 400}px)`;
-      glow.style.opacity = '1';
-    }
+      const INDIGO = '#39499e', LIME = '#d7fe64';
+      const root = document.documentElement;
+      const REDUCED = matchMedia('(prefers-reduced-motion: reduce)').matches;
+      // A mouse or trackpad gets the custom cursor; touch screens get the tap interactions instead.
+      const FINE = matchMedia('(hover: hover) and (pointer: fine)').matches;
+      const clamp = (v, a, b) => Math.min(b, Math.max(a, v));
+      const loadT = performance.now();
 
-    if (isTouchDevice) {
-      centerGlow();
-      window.addEventListener('resize', centerGlow);
-    } else {
-      document.addEventListener('mousemove', (e) => {
-        glow.style.transform = `translate(${e.clientX - 400}px, ${e.clientY - 400}px)`;
-        glow.style.opacity = '1';
-      });
+      const glow = document.getElementById('glow');
+      const nameEl = document.getElementById('nameEl');
 
-      document.addEventListener('mouseleave', () => {
-        glow.style.opacity = '0';
-        resetWave();
-      });
-    }
+      /* ---------- Load-in reveal ---------- */
+      function revealAll() {
+        requestAnimationFrame(() => {
+          document.querySelectorAll('.reveal').forEach((el) => el.classList.add('in'));
+        });
+      }
+      if (document.readyState === 'interactive' || document.readyState === 'complete') revealAll();
+      else document.addEventListener('DOMContentLoaded', revealAll);
 
-    // Split name into per-letter spans (preserving spaces) for the proximity wave
-    const letterSpans = [];
-    nameEl.querySelectorAll('.name-line').forEach((line) => {
-      const text = line.textContent;
-      line.textContent = '';
-      [...text].forEach((ch) => {
-        if (ch === ' ') {
-          const sp = document.createElement('span');
-          sp.className = 'sp';
-          line.appendChild(sp);
-        } else {
+      /* ---------- Email: copy without changing the page text; the cursor or tap drop confirms it ---------- */
+      let copiedUntil = 0;
+      window.copyEmail = function () {
+        const email = document.getElementById('email-text').innerText;
+        const fallback = () => {
+          const ta = document.createElement('textarea');
+          ta.value = email; ta.style.cssText = 'position:fixed;opacity:0';
+          document.body.appendChild(ta); ta.select();
+          try { document.execCommand('copy'); } catch (e) { /* ignore */ }
+          ta.remove();
+        };
+        if (navigator.clipboard && window.isSecureContext) navigator.clipboard.writeText(email).catch(fallback);
+        else fallback();
+        copiedUntil = performance.now() + 1400;
+      };
+
+      /* ---------- Footer: drop the "|" divider when the email and LinkedIn stack ---------- */
+      const footerLinks = document.querySelector('.footer-links');
+      if (footerLinks) {
+        const first = footerLinks.firstElementChild, last = footerLinks.lastElementChild;
+        const divider = [...footerLinks.children].find((n) => n !== first && n !== last && n.textContent.trim() === '|');
+        const fitFooter = () => {
+          // Measure in the normal side-by-side layout first, then decide.
+          footerLinks.style.flexDirection = ''; footerLinks.style.alignItems = '';
+          if (divider) divider.style.display = '';
+          if (last.offsetTop > first.offsetTop + 2) {
+            footerLinks.style.flexDirection = 'column'; footerLinks.style.alignItems = 'center';
+            if (divider) divider.style.display = 'none';
+          }
+        };
+        fitFooter();
+        window.addEventListener('resize', fitFooter);
+        if (document.fonts) document.fonts.ready.then(fitFooter);
+      }
+
+      /* ---------- Name: split into per-letter spans for the weight wave ---------- */
+      const lines = [...nameEl.querySelectorAll('.name-line')];
+      const letters = [];
+      lines.forEach((line) => {
+        const text = line.textContent;
+        line.textContent = '';
+        [...text].forEach((ch) => {
           const span = document.createElement('span');
-          span.className = 'ch';
-          span.textContent = ch;
-          line.appendChild(span);
-          letterSpans.push(span);
-        }
-      });
-    });
-
-    let rafPending = false;
-    let isHovered = false;
-    const pointer = { x: window.innerWidth / 2, y: window.innerHeight / 2 };
-    const letterState = new Map();
-
-    function resetWave() {
-      isHovered = false;
-      if (!rafPending) {
-        rafPending = true;
-        requestAnimationFrame(updateWave);
-      }
-    }
-
-    function updateWave() {
-      rafPending = false;
-      const nameRect = nameEl.getBoundingClientRect();
-      const radius = Math.max(260, Math.min(720, nameRect.width * 0.34));
-      let shouldContinue = false;
-
-      letterSpans.forEach((span) => {
-        const state = letterState.get(span) || { weight: 700, scale: 1 };
-        letterState.set(span, state);
-
-        const r = span.getBoundingClientRect();
-        const cx = r.left + r.width / 2;
-        const cy = r.top + r.height / 2;
-        const dist = Math.hypot(pointer.x - cx, pointer.y - cy);
-        const t = Math.max(0, 1 - dist / radius);
-        const targetWeight = isHovered ? 700 + t * 300 : 700;
-        const targetScale = isHovered ? 1 + t * 0.16 : 1;
-
-        const ease = isHovered ? 0.16 : 0.12;
-        state.weight += (targetWeight - state.weight) * ease;
-        state.scale += (targetScale - state.scale) * ease;
-
-        span.style.fontVariationSettings = `'wght' ${state.weight.toFixed(2)}`;
-        span.style.transform = `scaleX(${state.scale.toFixed(3)}) translateZ(0)`;
-
-        const diff = Math.abs(state.weight - targetWeight) + Math.abs(state.scale - targetScale);
-        if (diff > 0.01) {
-          shouldContinue = true;
-        }
+          if (ch === ' ') { span.className = 'sp'; line.appendChild(span); return; }
+          span.className = 'ch'; span.textContent = ch; line.appendChild(span);
+          letters.push({ el: span, weight: 700, scale: 1, w: null, s: null });
+        });
       });
 
-      if (shouldContinue) {
-        rafPending = true;
-        requestAnimationFrame(updateWave);
+      // Syne's weight axis stops at 800, so anything above looks the same but still costs the browser a new variant.
+      const MAX_WGHT = 800;
+      // The first time a weight is used the browser has to build that variant of the font, which drops frames.
+      // So: build the coarse weights (700, 705 ... 800) right after the font arrives, then the in-between ones in
+      // the background. Until the first batch is ready the wave only stretches the letters; the weight step starts
+      // at 5 and drops to 1 (smooth) once everything is built.
+      let wghtStep = document.fonts ? 5 : 1, warmed = !document.fonts, nameSettled = false;
+      function warmName() {
+        const chars = [...new Set(letters.map((L) => L.el.textContent))].join('');
+        const box = document.createElement('div');
+        box.setAttribute('aria-hidden', 'true');
+        // Drawn so the browser builds the weights, but in the background colour and almost transparent. Fixed to
+        // the screen and wrapped within it, so it can never make the page wider than the screen.
+        const cs = getComputedStyle(nameEl);
+        box.style.cssText = `position:fixed;left:0;top:0;width:100vw;height:100vh;overflow:hidden;color:#fffef9;opacity:0.02;pointer-events:none;`
+          + `font-family:${cs.fontFamily};font-size:${cs.fontSize};line-height:1;overflow-wrap:anywhere;`;
+        document.body.appendChild(box);
+        const coarse = [], fine = [];
+        for (let v = 700; v <= MAX_WGHT; v++) (v % 5 === 0 ? coarse : fine).push(v);
+        const queue = coarse.concat(fine);
+        let qi = 0;
+        (function tick() {
+          box.textContent = '';
+          for (let n = qi < coarse.length ? 2 : 1; n > 0 && qi < queue.length; n--, qi++) {
+            const s = document.createElement('span');
+            s.textContent = chars;
+            s.style.cssText = `position:absolute;left:0;top:0;width:100%;font-variation-settings:'wght' ${queue[qi]}`;
+            box.appendChild(s);
+          }
+          if (!warmed && qi > coarse.length + 1) { warmed = true; nameSettled = false; }
+          if (qi < queue.length) requestAnimationFrame(tick);
+          else requestAnimationFrame(() => requestAnimationFrame(() => { box.remove(); warmed = true; wghtStep = 1; nameSettled = false; }));
+        })();
       }
-    }
+      if (document.fonts) Promise.all([document.fonts.load('700 1em Syne'), document.fonts.ready]).catch(() => {}).then(warmName);
 
-    document.addEventListener('mousemove', (e) => {
-      pointer.x = e.clientX;
-      pointer.y = e.clientY;
-      isHovered = true;
-      if (!rafPending) {
-        rafPending = true;
-        requestAnimationFrame(updateWave);
+      function writeLetter(L) {
+        const w = Math.min(MAX_WGHT, Math.round(L.weight / wghtStep) * wghtStep), s = L.scale.toFixed(3);
+        if (w !== L.w) { L.w = w; L.el.style.fontVariationSettings = `'wght' ${w}`; }
+        if (s !== L.s) { L.s = s; L.el.style.transform = `scaleX(${s})`; }
       }
-    });
 
-    document.addEventListener('mouseleave', () => {
-      if (!rafPending) {
-        rafPending = true;
-        requestAnimationFrame(updateWave);
-      }
-    });
-    window.addEventListener('blur', resetWave);
-    window.addEventListener('resize', resetWave);
+      /* ---------- Name: each click or tap leaves a lime stamp that lingers a few seconds, then shrinks away ---------- */
+      nameEl.addEventListener('click', (e) => {
+        if (e.clientX === 0 && e.clientY === 0) return;        // keyboard-triggered clicks have no position
+        const rand = (a, b) => a + Math.random() * (b - a), pc = () => Math.round(rand(40, 60));
+        const size = rand(90, 170) * (innerWidth < 640 ? 0.6 : 1), a = pc(), b = pc(), c = pc(), d = pc();
+        const stamp = document.createElement('div');
+        stamp.className = 'name-stamp'; stamp.setAttribute('aria-hidden', 'true');
+        stamp.style.cssText = `left:${e.pageX}px;top:${e.pageY}px;width:${size}px;height:${size}px;margin:${-size / 2}px 0 0 ${-size / 2}px;`
+          + `border-radius:${a}% ${100 - a}% ${b}% ${100 - b}% / ${c}% ${d}% ${100 - d}% ${100 - c}%;rotate:${Math.round(rand(0, 360))}deg;`;
+        document.body.appendChild(stamp);
+        if (!stamp.animate) { setTimeout(() => stamp.remove(), 4200); return; }
+        stamp.animate(REDUCED
+          ? [{ opacity: 0 }, { opacity: 1, offset: 0.05 }, { opacity: 1, offset: 0.88 }, { opacity: 0 }]
+          : [{ scale: '0.2', easing: 'cubic-bezier(0.34, 1.5, 0.64, 1)' }, { scale: '1', offset: 0.05 },
+             { scale: '1', offset: 0.88, easing: 'ease-in' }, { scale: '0' }],
+          { duration: 4200 }).onfinish = () => stamp.remove();
+      });
 
-    // Disco hover overlay (follows cursor, click-through)
-    (function(){
-      const discoLink = document.querySelector('.disco-link');
-      if (!discoLink) return;
-      const overlay = document.createElement('div');
-      overlay.className = 'hover-arrow';
-      overlay.textContent = '→';
-      overlay.setAttribute('aria-hidden', 'true');
-      document.body.appendChild(overlay);
+      if (FINE) desktop(); else touchMode();
 
-      let visible = false;
-      function show(e){
-        overlay.style.left = `${e.clientX}px`;
-        overlay.style.top = `${e.clientY + 18}px`;
-        overlay.style.opacity = '1';
-        overlay.style.transform = 'translate(-100%,-50%) scale(1) rotate(-45deg)';
-        visible = true;
+      /* ============================================================
+         Desktop: the "Drop" cursor, the glow, and the name wave following the pointer
+         ============================================================ */
+      function desktop() {
+        // Damped spring, sub-stepped so it stays stable on slow frames.
+        const S = (x) => ({ x: x || 0, v: 0 });
+        function step(s, target, k, d, dt) {
+          if (REDUCED) { s.x = target; s.v = 0; return s.x; }
+          const n = Math.max(1, Math.ceil(dt / (1 / 120))), h = dt / n;
+          for (let i = 0; i < n; i++) { s.v += (-k * (s.x - target) - d * s.v) * h; s.x += s.v * h; }
+          return s.x;
+        }
+
+        // What the cursor does over each kind of element.
+        const tag = (sel, ctx) => document.querySelectorAll(sel).forEach((n) => { n.dataset.cursor = ctx; });
+        tag('#nameEl', 'name');
+        tag('nav a', 'link');
+        tag('.disco-link, .footer-links a', 'ext');
+        tag('.email-link', 'copy');
+        tag('.tagline, .row-title:not(a), .row-desc, .row-tag, .about-big, .about-small', 'text');
+
+        // The text caret's height follows the size of the text under it.
+        const caretCache = new WeakMap();
+        function caretH(node) {
+          if (!node) return 28;
+          if (!caretCache.has(node)) caretCache.set(node, clamp(parseFloat(getComputedStyle(node).fontSize) * 1.25, 28, 64));
+          return caretCache.get(node);
+        }
+        window.addEventListener('resize', () => document.querySelectorAll('[data-cursor="text"]').forEach((n) => caretCache.delete(n)));
+
+        const m = { x: innerWidth / 2, y: innerHeight / 2, down: false, seen: false, inside: true, visible: false, ctx: 'default', el: null, inFooter: false };
+        function repick() {
+          const t = document.elementFromPoint(m.x, m.y);
+          const hit = t && t.closest ? t.closest('[data-cursor]') : null;
+          m.el = hit; m.ctx = hit ? hit.dataset.cursor : 'default';
+          m.inFooter = !!(t && t.closest && t.closest('footer'));
+        }
+        function setVisible() {
+          m.visible = m.seen && m.inside;
+          root.classList.toggle('drop-on', m.visible);
+        }
+
+        // Build the cursor.
+        const ARROW = '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12h15M13 6l6 6-6 6"/></svg>';
+        const el = (cls, parent) => { const n = document.createElement('div'); n.className = cls; n.setAttribute('aria-hidden', 'true'); parent.appendChild(n); return n; };
+        const drop = el('drop', document.body), blob = el('drop-blob', drop), glyph = el('drop-glyph', drop);
+        glyph.innerHTML = ARROW + '<span></span>';
+        const svg = glyph.firstChild, label = glyph.lastChild;
+        const sx = S(m.x), sy = S(m.y), sw = S(22), sh = S(22), spress = S(1), sst = S(0), sg = S(0), srot = S(-45);
+        let ang = 0;
+
+        window.addEventListener('pointermove', (e) => {
+          if (e.pointerType && e.pointerType !== 'mouse') return;
+          m.x = e.clientX; m.y = e.clientY;
+          if (!m.seen) {
+            m.seen = true; sx.x = m.x; sy.x = m.y;
+            root.classList.add('has-drop');           // hide the system cursor only once ours is on screen
+          }
+          m.inside = true; setVisible();
+        }, { passive: true });
+        window.addEventListener('pointerdown', (e) => { if (e.pointerType === 'mouse') m.down = true; });
+        window.addEventListener('pointerup', () => { m.down = false; });
+        root.addEventListener('mouseleave', () => { m.inside = false; m.down = false; setVisible(); });
+        root.addEventListener('mouseenter', () => { m.inside = true; setVisible(); });
+        window.addEventListener('blur', () => { m.inside = false; m.down = false; setVisible(); });
+        window.addEventListener('click', () => { sw.v += 520; sh.v += 520; });
+        window.addEventListener('scroll', () => { nameSettled = false; }, { passive: true });
+        window.addEventListener('resize', () => { nameSettled = false; });
+
+        function dropFrame(dt, now) {
+          const c = m.ctx;
+          // Nav links: the drop grows and highlights the label. Links that leave the page, and the email:
+          // it grows more and shows an arrow or a word. Over text it thins to a caret.
+          let tw = 22, th = 22, showGlyph = 0, rot = srot.x, text = '';
+          if (c === 'link') { tw = th = 58; showGlyph = 1; rot = 90; }      // down arrow: these scroll down the page
+          else if (c === 'ext') { tw = th = 86; showGlyph = 1; rot = -45; }
+          else if (c === 'copy') { tw = th = 96; showGlyph = 1; text = now < copiedUntil ? 'Copied \u2713' : 'Copy'; }
+          else if (c === 'name') { tw = th = 150; }
+          else if (c === 'text') { tw = 3; th = caretH(m.el); }
+
+          const x = step(sx, m.x, 700, 46, dt), y = step(sy, m.y, 700, 46, dt);
+          const w = Math.max(2, step(sw, tw, 380, 24, dt)), h = Math.max(2, step(sh, th, 380, 24, dt));
+          // The footer is lime, so the drop flips there to solid indigo with lime contents.
+          // Everywhere else it keeps its see-through multiply blend.
+          const inv = m.inFooter;
+          drop.style.mixBlendMode = inv ? 'normal' : 'multiply';
+          blob.style.background = inv || c === 'text' ? INDIGO : LIME;
+          glyph.style.color = inv ? LIME : INDIGO;
+
+          const press = step(spress, m.down ? 0.82 : 1, 600, 24, dt);
+          const sp = Math.hypot(sx.v, sy.v);
+          if (sp > 60) ang = Math.atan2(sy.v, sx.v);
+          // Every state except the caret squashes and stretches along the direction of travel.
+          const st = step(sst, c !== 'text' ? clamp(sp / 2800, 0, 0.38) : 0, 300, 26, dt);
+          const g = clamp(step(sg, showGlyph, 420, 30, dt), 0, 1.2);
+          // While the arrow is hidden, point it the right way at once, so it appears already aimed instead of spinning in.
+          if (g < 0.05) { srot.x = rot; srot.v = 0; }
+          const r = step(srot, rot, 260, 22, dt);
+
+          drop.style.transform = `translate3d(${x.toFixed(2)}px, ${y.toFixed(2)}px, 0)`;
+          blob.style.width = `${w.toFixed(2)}px`; blob.style.height = `${h.toFixed(2)}px`;
+          blob.style.transform = `translate(-50%, -50%) rotate(${ang.toFixed(3)}rad) scale(${((1 + st) * press).toFixed(3)}, ${((1 - st * 0.5) * press).toFixed(3)})`;
+          glyph.style.transform = `translate(-50%, -50%) scale(${(g * press).toFixed(3)})`;
+          glyph.style.opacity = clamp(g, 0, 1).toFixed(3);
+          if (text && label.textContent !== text) label.textContent = text;
+          label.style.opacity = text ? 1 : 0;
+          svg.style.opacity = text ? 0 : 1;
+          const size = clamp(w * 0.6, 18, 52);
+          svg.style.width = svg.style.height = `${size.toFixed(1)}px`;
+          svg.style.transform = `rotate(${r.toFixed(1)}deg)`;
+        }
+
+        let lastPX = NaN, lastPY = NaN, lastVis = null;
+        function nameFrame(dtMs) {
+          // Nothing to do while the pointer is still and every letter is at rest.
+          const moved = m.x !== lastPX || m.y !== lastPY || m.visible !== lastVis;
+          lastPX = m.x; lastPY = m.y; lastVis = m.visible;
+          if (!moved && nameSettled) return;
+          // Measure every letter first, then write. Mixing the two makes the browser redo layout once per letter.
+          const radius = Math.max(260, Math.min(720, nameEl.getBoundingClientRect().width * 0.34));
+          const centres = letters.map((L) => { const b = L.el.getBoundingClientRect(); return [b.left + b.width / 2, b.top + b.height / 2]; });
+          const follow = REDUCED ? 1 : 1 - Math.exp(-dtMs / 95);
+          nameSettled = true;
+          letters.forEach((L, i) => {
+            const t = m.visible ? Math.max(0, 1 - Math.hypot(m.x - centres[i][0], m.y - centres[i][1]) / radius) : 0;
+            const tw = 700 + (warmed ? t * 300 : 0), ts = 1 + t * 0.16;
+            L.weight += (tw - L.weight) * follow; L.scale += (ts - L.scale) * follow;
+            if (Math.abs(tw - L.weight) > 0.4 || Math.abs(ts - L.scale) > 0.0008) nameSettled = false;
+            else { L.weight = tw; L.scale = ts; }
+            writeLetter(L);
+          });
+        }
+
+        let lastT = performance.now();
+        (function loop(now) {
+          const dtMs = clamp(now - lastT, 1, 1000 / 30); lastT = now;
+          if (m.seen) repick();          // re-check every frame, so the cursor stays right while the page scrolls under it
+          if (glow) {
+            glow.style.transform = `translate(${m.x - 400}px, ${m.y - 400}px)`;
+            glow.style.opacity = m.visible ? '1' : '0';
+          }
+          nameFrame(dtMs);
+          dropFrame(dtMs / 1000, now);
+          requestAnimationFrame(loop);
+        })(performance.now());
       }
-      function move(e){
-        if(!visible) return;
-        overlay.style.left = `${e.clientX + 50}px`;
-        overlay.style.top = `${e.clientY }px`;
+
+      /* ============================================================
+         Touch: the name wave plays on load and follows scrolling, the glow drifts,
+         taps bloom a drop, and rows fade up as they scroll into view
+         ============================================================ */
+      function touchMode() {
+        root.classList.add('is-touch');
+
+        const touch = { x: 0, y: 0, active: false, seen: false };
+        window.addEventListener('pointerdown', (e) => { touch.x = e.clientX; touch.y = e.clientY; touch.active = true; touch.seen = true; }, { passive: true });
+        window.addEventListener('pointermove', (e) => { if (touch.active) { touch.x = e.clientX; touch.y = e.clientY; } }, { passive: true });
+        window.addEventListener('pointerup', () => { touch.active = false; }, { passive: true });
+        window.addEventListener('pointercancel', () => { touch.active = false; }, { passive: true });
+
+        /* The name. Same wave as desktop (bolder and wider near the wave). On a phone the name already fills the
+           width, so both lines scale down together by exactly as much as is needed to keep it on screen. */
+        const EDGE = 8;            // px kept clear at each side of the screen
+        const INTRO_MS = 1800;     // how long the load-in sweep takes to cross the name
+        const EASE_MS = 210;       // how quickly a letter follows the wave
+        const easeInOut = (p) => (p < 0.5 ? 2 * p * p : 1 - Math.pow(-2 * p + 2, 2) / 2);
+        let introStart = 0, introDone = REDUCED, fitWritten = '', lastNameT = 0;
+
+        function nameFrame(now) {
+          const dt = Math.min(50, now - (lastNameT || now)); lastNameT = now;
+          const follow = 1 - Math.exp(-dt / EASE_MS);
+          const box = nameEl.getBoundingClientRect();
+          const atRest = letters.every((L) => L.weight === 700 && L.scale === 1);
+          if (box.bottom < -40 && atRest) return;                 // scrolled away and settled: nothing to do
+          const centres = letters.map((L) => { const b = L.el.getBoundingClientRect(); return [b.left + b.width / 2, b.top + b.height / 2]; });
+
+          const fit = Math.min(1, (innerWidth - EDGE * 2) / Math.max(1, box.width));
+          const fitStr = fit.toFixed(4);
+          if (fitStr !== fitWritten) { fitWritten = fitStr; lines.forEach((l) => { l.style.transform = fit < 1 ? `scale(${fitStr})` : ''; }); }
+          const shownW = box.width * fit, shownL = box.left + (box.width - shownW) / 2;
+          const R = Math.max(90, shownW * 0.34);
+
+          // Where the wave is: the load-in sweep, a finger on the screen, or the scroll position.
+          let src = null;
+          if (!introDone && warmed && now - loadT > 600) {
+            if (!introStart) introStart = now;
+            const p = (now - introStart) / INTRO_MS;
+            if (p >= 1) introDone = true;
+            else src = { x: shownL - R + (shownW + 2 * R) * easeInOut(p), y: null, k: 1 };
+          } else if (touch.active) {
+            src = { x: touch.x, y: touch.y, k: 1 };
+          } else if (introDone) {
+            const p = clamp(scrollY / Math.max(1, box.bottom + scrollY), 0, 1);
+            if (p > 0) src = { x: shownL + p * shownW, y: null, k: Math.min(1, p * 5) };
+          }
+
+          letters.forEach((L, i) => {
+            let t = 0;
+            if (src && !REDUCED) {
+              const d = src.y === null ? Math.abs(src.x - centres[i][0]) : Math.hypot(src.x - centres[i][0], src.y - centres[i][1]);
+              t = src.k * Math.max(0, 1 - d / R);
+            }
+            const tw = 700 + t * 300, ts = 1 + t * 0.16;
+            L.weight += (tw - L.weight) * follow; L.scale += (ts - L.scale) * follow;
+            if (Math.abs(tw - L.weight) < 0.4 && Math.abs(ts - L.scale) < 0.0008) { L.weight = tw; L.scale = ts; }
+            writeLetter(L);
+          });
+        }
+
+        /* The glow eases towards the last touch and drifts when idle. */
+        const g = { x: innerWidth / 2, y: innerHeight * 0.42 };
+        function glowFrame(now) {
+          if (!glow) return;
+          const tx = touch.seen ? touch.x : innerWidth / 2, ty = touch.seen ? touch.y : innerHeight * 0.42;
+          g.x += (tx - g.x) * 0.09; g.y += (ty - g.y) * 0.09;
+          const dx = REDUCED ? 0 : Math.sin(now / 2300) * 36, dy = REDUCED ? 0 : Math.cos(now / 3100) * 28;
+          glow.style.transform = `translate(${(g.x + dx - 400).toFixed(1)}px, ${(g.y + dy - 400).toFixed(1)}px)`;
+          glow.style.opacity = '1';
+        }
+
+        /* A drop blooms centred under each tap: pops in over 150ms, holds briefly, shrinks and fades over 170ms. */
+        const ARROW = '<svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12h15M13 6l6 6-6 6"/></svg>';
+        const IN = 150, OUT = 170;
+        function spawnDrop(x, y, opts) {
+          const size = opts.size || 44, hold = opts.hold || 40;
+          const d = document.createElement('div');
+          d.className = 'tap-drop' + (opts.inv ? ' inv' : ''); d.setAttribute('aria-hidden', 'true');
+          d.style.width = d.style.height = `${size}px`;
+          d.style.left = `${x}px`; d.style.top = `${y}px`;
+          const inner = document.createElement('span');
+          inner.className = 'tap-in'; inner.innerHTML = opts.html || '';
+          if (opts.rotate && inner.firstChild) inner.firstChild.style.transform = `rotate(${opts.rotate}deg)`;
+          d.appendChild(inner);
+          document.body.appendChild(d);
+          if (!d.animate) { setTimeout(() => d.remove(), IN + hold + OUT); d.style.transform = 'translate(-50%, -50%)'; return; }
+
+          const T = 'translate(-50%, -50%)', total = IN + hold + OUT;
+          d.animate(REDUCED
+            ? [{ transform: `${T} scale(1)`, opacity: 0 }, { transform: `${T} scale(1)`, opacity: 1, offset: IN / total },
+               { transform: `${T} scale(1)`, opacity: 1, offset: (IN + hold) / total }, { transform: `${T} scale(1)`, opacity: 0 }]
+            : [{ transform: `${T} scale(0.35)`, opacity: 1, easing: 'cubic-bezier(0.34, 1.45, 0.64, 1)' },
+               { transform: `${T} scale(1)`, opacity: 1, offset: IN / total },
+               { transform: `${T} scale(1)`, opacity: 1, offset: (IN + hold) / total, easing: 'cubic-bezier(0.4, 0, 1, 1)' },
+               { transform: `${T} scale(0.88)`, opacity: 0 }],
+            { duration: total, easing: 'linear' }).onfinish = () => d.remove();
+          // The arrow or word arrives a beat after the drop.
+          if (opts.html && !REDUCED) inner.animate(
+            [{ transform: 'scale(0.55)', opacity: 0 }, { transform: 'scale(1)', opacity: 1 }],
+            { duration: 160, delay: 40, easing: 'cubic-bezier(0.2, 0.9, 0.2, 1)', fill: 'backwards' });
+        }
+
+        document.addEventListener('click', (e) => {
+          const t = e.target;
+          if (!t || !t.closest || (e.clientX === 0 && e.clientY === 0)) return;
+          const inv = !!t.closest('footer'), link = t.closest('a');
+          if (t.closest('.email-link')) spawnDrop(e.clientX, e.clientY, { size: 104, html: '<span>Copied \u2713</span>', hold: 700, inv: inv });
+          else if (link && link.target === '_blank') spawnDrop(e.clientX, e.clientY, { size: 84, html: ARROW, rotate: -45, hold: 140, inv: inv });
+          else if (link) spawnDrop(e.clientX, e.clientY, { size: 68, html: ARROW, rotate: 90, hold: 110, inv: inv });
+          else if (!t.closest('#nameEl')) spawnDrop(e.clientX, e.clientY, { size: 44, inv: inv });
+        });
+
+        /* Rows fade up as they scroll into view. */
+        if (!REDUCED && 'IntersectionObserver' in window) {
+          const revealEls = [...document.querySelectorAll('.row, .about-small, .about-big')];
+          revealEls.forEach((n) => n.classList.add('m-reveal'));
+          const io = new IntersectionObserver((entries) => entries.forEach((en) => {
+            if (en.isIntersecting) { en.target.classList.add('m-in'); io.unobserve(en.target); }
+          }), { threshold: 0.12, rootMargin: '0px 0px -6% 0px' });
+          revealEls.forEach((n) => io.observe(n));
+        }
+
+        (function loop(now) { nameFrame(now); glowFrame(now); requestAnimationFrame(loop); })(performance.now());
       }
-      function hide(){
-        overlay.style.opacity = '0';
-        overlay.style.transform = 'translate(-100%,-50%) scale(0) rotate(-45deg)';
-        visible = false;
-      }
-      discoLink.addEventListener('mouseenter', show);
-      discoLink.addEventListener('mousemove', move);
-      discoLink.addEventListener('mouseleave', hide);
-      document.addEventListener('scroll', hide, true);
-      window.addEventListener('blur', hide);
     })();
-
-    // Load-in reveal animation
-    function revealAll() {
-      requestAnimationFrame(() => {
-        document.querySelectorAll('.reveal').forEach((el) => el.classList.add('in'));
-      });
-    }
-    if (document.readyState === 'interactive' || document.readyState === 'complete') {
-      revealAll();
-    } else {
-      document.addEventListener('DOMContentLoaded', revealAll);
-    }
-
-    function copyEmail() {
-      // Get the text from the HTML element
-      const emailText = document.getElementById("email-text").innerText;
-
-      // Use the modern Clipboard API to copy the text
-      navigator.clipboard.writeText(emailText).then(() => {
-        alert("Email address copied to clipboard!");
-      }).catch(err => {
-        console.error("Failed to copy text: ", err);
-      });
-    }
   </script>
 
 </body>
