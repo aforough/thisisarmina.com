@@ -41,8 +41,7 @@
   <div id="glow"></div>
 
   <header class="reveal">
-    <div>👋</div>
-    <nav>
+     <nav>
       <a href="#experience">Experience</a>
       <a href="#about">About</a>
     </nav>
@@ -65,7 +64,17 @@
           <div class="row-desc">A Google bet on web-based generative interfaces (collab between Chrome + Creative Lab + Google DeepMind). I switched from manager to IC to lead this, helped pitch it into existence, and took it from concept to a Google Labs launch. Several of its experiments have since shipped in Chrome.</div>
         </div>
       </div>
-      <div class="row-tag">Designer + AI Prototyper + PM</div>
+      <div class="row-tag">Design Lead + AI Prototyper + PM<span class="row-years">2024–2026</span></div>
+    </div>
+    <div class="row">
+      <div class="row-left">
+        <img class="row-icon" src="Assets/DeepMind.svg" alt="Google DeepMind">
+        <div>
+          <div class="row-title">Google DeepMind</div>
+          <div class="row-desc">A run of design sprints with Google DeepMind teams. In the latest one, I was the only designer helping teach Gemini 4 what "good design" looks and behaves like for GenUI. Before that, I teamed up with them on an earlier GenUI sprint for GenTabs and a few other AI product incubations.</div>
+        </div>
+      </div>
+      <div class="row-tag">Design Lead, in sprints<span class="row-years">2025–2026</span></div>
     </div>
     <div class="row">
       <div class="row-left">
@@ -75,7 +84,7 @@
           <div class="row-desc">Joined as the most junior designer and became the design manager for Chrome on Android within 2 years, leading a team of 4–7 designers. Led platform-level design while spinning up new investment areas for the org. Shipped features to billions of users, landed multiple patents, moved stubborn metrics, and got featured in 2 Google I/O announcements.</div>
         </div>
       </div>
-      <div class="row-tag">Designer → Lead + Manager</div>
+      <div class="row-tag">Designer → Lead + Manager<span class="row-years">2019–2025</span></div>
     </div>
     <div class="row">
       <div class="row-left">
@@ -86,7 +95,7 @@
             globally, including UNHCR and Learning Equality.</div>
         </div>
       </div>
-      <div class="row-tag">Design Consultant</div>
+      <div class="row-tag">Design Consultant, in sprints<span class="row-years">2018–2019</span></div>
     </div>
     <div class="row">
       <div class="row-left">
@@ -96,7 +105,7 @@
           <div class="row-desc">A concept reimagining Google Maps for local communities. Led it from early vision through prototyping, and pitched directly to leadership.</div>
         </div>
       </div>
-      <div class="row-tag">Design Intern</div>
+      <div class="row-tag">Design Intern<span class="row-years">2018</span></div>
     </div>
     <div class="row">
       <div class="row-left">
@@ -107,7 +116,7 @@
             designing and prototyping for a medium that barely had a design language yet.</div>
         </div>
       </div>
-      <div class="row-tag">VR Prototyper</div>
+      <div class="row-tag">VR Prototyper<span class="row-years">2018</span></div>
     </div>
     <div class="row">
       <div class="row-left">
@@ -118,21 +127,24 @@
             frameworks behind them.</div>
         </div>
       </div>
-      <div class="row-tag">Design Intern</div>
+      <div class="row-tag">Design Intern<span class="row-years">2018</span></div>
     </div>
   </div>
 
   <div id="about" class="reveal">
     <div class="about-small">Thanks for scrolling through ✌️</div>
-    <div class="about-big">I've had the privilege to lead design at both ends of a shift in software: from one interface for billions of people (Chrome), to interfaces generated for one (Google Disco, GenTabs). At both ends, I turn ambiguity into a strategy teams will fund, then into something people actually want to use.</div>
-    <div class="about-big">On every project, my role expands past design: I drive strategy like a PM, prototype like an engineer, and fight for the vision until it ships.</div>
+    <div class="about-big">I've led design at both ends of a shift in software: from one interface for billions of people (Chrome), to interfaces generated for one (Google Disco, GenTabs). At both ends, I turn ambiguity into a strategy teams will fund, then into something people want to use.</div>
+    <div class="about-big">On every project my role expands past design: I drive strategy like a PM, prototype like an engineer, and fight for the vision until it ships.</div>
   </div>
 
   <footer>
-    <div class="footer-links">
-      <span id="email-text" class="email-link" onclick="copyEmail()">armina.fsh@gmail.com</span>
-      <span>|</span>
-      <a href="https://www.linkedin.com/in/armina-foroughi-419981114/" target="_blank">LinkedIn</a>
+    <div class="footer-inner">
+      <div class="footer-note">Designed by hand,<br>coded with me + AI hand in hand. 🤝</div>
+      <div class="footer-links">
+        <span id="email-text" class="email-link" role="button" tabindex="0" onclick="copyEmail()">Email</span>
+        <span>|</span>
+        <a href="https://www.linkedin.com/in/armina-foroughi-419981114/" target="_blank">LinkedIn</a>
+      </div>
     </div>
   </footer>
 
@@ -151,6 +163,47 @@
       const glow = document.getElementById('glow');
       const nameEl = document.getElementById('nameEl');
 
+      /* ---------- Reload scroll guard & clean anchor scrolling ---------- */
+      let userInteracted = false;
+      const markInteracted = () => { userInteracted = true; };
+      window.addEventListener('wheel', markInteracted, { once: true, passive: true });
+      window.addEventListener('touchmove', markInteracted, { once: true, passive: true });
+      window.addEventListener('keydown', markInteracted, { once: true });
+
+      document.querySelectorAll('nav a[href^="#"]').forEach((a) => {
+        a.addEventListener('click', (e) => {
+          const id = a.getAttribute('href');
+          const target = id && id.length > 1 ? document.querySelector(id) : null;
+          if (!target) return;
+          e.preventDefault();
+          markInteracted();
+          target.scrollIntoView({ behavior: REDUCED ? 'auto' : 'smooth' });
+        });
+      });
+
+      if (!location.hash) {
+        let wasAtTop = true;
+        try {
+          const saved = sessionStorage.getItem('scrollY');
+          if (saved !== null && parseFloat(saved) > 4) wasAtTop = false;
+        } catch (e) { /* ignore */ }
+        if (wasAtTop) {
+          if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
+          const snapTop = () => {
+            if (!userInteracted && window.scrollY > 0) window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
+          };
+          snapTop();
+          requestAnimationFrame(snapTop);
+          window.addEventListener('load', snapTop, { once: true });
+          if (document.fonts) document.fonts.ready.then(snapTop);
+        } else if ('scrollRestoration' in history) {
+          history.scrollRestoration = 'auto';
+        }
+        window.addEventListener('pagehide', () => {
+          try { sessionStorage.setItem('scrollY', String(window.scrollY)); } catch (e) { /* ignore */ }
+        });
+      }
+
       /* ---------- Load-in reveal ---------- */
       function revealAll() {
         requestAnimationFrame(() => {
@@ -160,10 +213,22 @@
       if (document.readyState === 'interactive' || document.readyState === 'complete') revealAll();
       else document.addEventListener('DOMContentLoaded', revealAll);
 
-      /* ---------- Email: copy without changing the page text; the cursor or tap drop confirms it ---------- */
+      /* ---------- Email: the address is not written anywhere in the page. It is put together here, only when
+         someone clicks "Email", so simple scrapers that read the HTML never see it. The cursor or tap drop confirms
+         the copy. The "+site" tag still delivers to the normal inbox and shows which mail came through the site. */
       let copiedUntil = 0;
+      const emailEl = document.getElementById('email-text');
+      const said = document.createElement('span');          // announces the copy to screen readers
+      said.setAttribute('aria-live', 'polite');
+      said.style.cssText = 'position:absolute;top:0;left:0;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap;';
+      document.body.appendChild(said);
+      emailEl.setAttribute('aria-label', 'Copy email address');
+      emailEl.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); window.copyEmail(); }
+      });
       window.copyEmail = function () {
-        const email = document.getElementById('email-text').innerText;
+        const email = [['armina', 'fsh'].join('.'), 'site'].join('+') + String.fromCharCode(64) + ['gmail', 'com'].join('.');
+        said.textContent = ''; setTimeout(() => { said.textContent = 'Email address copied'; }, 50);
         const fallback = () => {
           const ta = document.createElement('textarea');
           ta.value = email; ta.style.cssText = 'position:fixed;opacity:0';
@@ -290,7 +355,7 @@
         tag('nav a', 'link');
         tag('.disco-link, .footer-links a', 'ext');
         tag('.email-link', 'copy');
-        tag('.tagline, .row-title:not(a), .row-desc, .row-tag, .about-big, .about-small', 'text');
+        tag('.tagline, .row-title:not(a), .row-desc, .row-tag, .about-big, .about-small, .footer-note', 'text');
 
         // The text caret's height follows the size of the text under it.
         const caretCache = new WeakMap();
@@ -419,7 +484,7 @@
       }
 
       /* ============================================================
-         Touch: the name wave plays on load and follows scrolling, the glow drifts,
+         Touch: the name wave follows scrolling and a resting finger, the glow drifts,
          taps bloom a drop, and rows fade up as they scroll into view
          ============================================================ */
       function touchMode() {
@@ -434,10 +499,8 @@
         /* The name. Same wave as desktop (bolder and wider near the wave). On a phone the name already fills the
            width, so both lines scale down together by exactly as much as is needed to keep it on screen. */
         const EDGE = 8;            // px kept clear at each side of the screen
-        const INTRO_MS = 1800;     // how long the load-in sweep takes to cross the name
         const EASE_MS = 210;       // how quickly a letter follows the wave
-        const easeInOut = (p) => (p < 0.5 ? 2 * p * p : 1 - Math.pow(-2 * p + 2, 2) / 2);
-        let introStart = 0, introDone = REDUCED, fitWritten = '', lastNameT = 0;
+        let fitWritten = '', lastNameT = 0;
 
         function nameFrame(now) {
           const dt = Math.min(50, now - (lastNameT || now)); lastNameT = now;
@@ -453,16 +516,11 @@
           const shownW = box.width * fit, shownL = box.left + (box.width - shownW) / 2;
           const R = Math.max(90, shownW * 0.34);
 
-          // Where the wave is: the load-in sweep, a finger on the screen, or the scroll position.
+          // Where the wave is: under a finger resting on the screen, otherwise it follows the scroll position.
           let src = null;
-          if (!introDone && warmed && now - loadT > 600) {
-            if (!introStart) introStart = now;
-            const p = (now - introStart) / INTRO_MS;
-            if (p >= 1) introDone = true;
-            else src = { x: shownL - R + (shownW + 2 * R) * easeInOut(p), y: null, k: 1 };
-          } else if (touch.active) {
+          if (touch.active) {
             src = { x: touch.x, y: touch.y, k: 1 };
-          } else if (introDone) {
+          } else if (warmed) {
             const p = clamp(scrollY / Math.max(1, box.bottom + scrollY), 0, 1);
             if (p > 0) src = { x: shownL + p * shownW, y: null, k: Math.min(1, p * 5) };
           }
